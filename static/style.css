@@ -3,6 +3,8 @@ body{
     padding: 0;
     background-color: black;
     font-family: "Rubik", sans-serif;
+    background-image: url("jungle.jpeg");
+    background-size: 1500px;
 
 }
 
@@ -11,10 +13,12 @@ ul{
     margin-top: 6px;
     list-style: none;
     display: flex;
+    
 }
 
 li{
     padding: 30px;
+    
 }
 
 .header-wrapper{
@@ -23,4 +27,65 @@ li{
     background-color: white;
     margin: 40px;
     border-radius: 50px;
+}
+
+.main-container{
+
+    color:white;
+    height: 80vh;
+    width: 100%;
+    
+}
+
+.division{
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center items vertically */
+    height: 70vh;
+    
+    
+     /* Set height to full viewport height */
+}
+
+.large{
+    cursor: pointer;
+    margin: 25px;
+    width: 30%;
+    height: 65vh;
+    border-radius: 30px;
+    padding: 40px;
+    background-color: #fff;
+    background-color: rgba(255,255,255,0.5);
+    transition: 0.5s;
+    display: block;
+    align-content: end;
+    
+}
+
+.large:hover{
+    background-color: rgba(255,255,255,0.6);
+}
+
+.mini{
+    margin: 10px;
+    height: 19vh;
+    width: 400px;
+    border-radius: 30px;
+    padding: 40px;
+    margin: 25px;
+    cursor: pointer;
+    background-color: #fff;
+    background-color: rgba(255,255,255,0.5);
+    transition: 0.5s;
+    display: block;
+    align-content: end;
+}
+
+.mini:hover{
+    background-color: rgba(255,255,255,0.6);
+}
+    
+a{
+    font-style: none;
+    color: white;
 }
