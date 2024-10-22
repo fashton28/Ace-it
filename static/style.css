@@ -71,7 +71,7 @@ li{
     height: 19vh;
     width: 400px;
     border-radius: 30px;
-    padding: 40px;
+    padding: 20px;
     margin: 25px;
     cursor: pointer;
     background-color: #fff;
@@ -86,6 +86,44 @@ li{
 }
     
 a{
-    font-style: none;
+    text-decoration: none;
     color: white;
+
 }
+
+.mini-container a {
+    text-decoration: none;
+    color: inherit; /* This will make the link color the same as the parent text color */
+  }
+  
+  .mini-container a:hover {
+    text-decoration: none;
+    color: inherit; /* This ensures the color doesn't change on hover */
+  }
+
+  .title{
+    color:white;
+  }
+
+
+  /* Style for mapIt */
+
+  /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+gmp-map {
+    height: 100%;
+    padding:100px;
+    display: flex;
+    width: 900px;
+    
+    
+}
+
+      /* Optional: Makes the sample page fill the window. */
+html,body {
+    height: 100%;
+    margin: 0;
+    padding: 0;}
+
+
+
