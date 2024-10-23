@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal App</title>
+    <style>
+        body {
+            
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+            background-image: url("jungle.jpeg");
+            background-size: 1500px;
+            
+        }
+        h1 {
+            text-align: center;
+            color: orange
+        }
+        #journal-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #entry-title, #entry-content {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #entry-content {
+            height: 150px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #journal-entries {
+            margin-top: 20px;
+        }
+        .journal-entry {
+            background-color: white;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .journal-entry-header {
+            padding: 15px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        .journal-entry-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        .journal-entry-content {
+            padding: 15px;
+            display: none;
+        }
+        .journal-entry-content p {
+            color: #666;
+            margin: 0 0 10px 0;
+        }
+        .journal-entry-content small {
+            color: #999;
+        }
+
+        .header-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+    
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            color: white;
+        }
+
+        nav h4 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: white;
+            font-weight: 600;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            gap: 2rem;
+            color: white;
+        }
+
+        nav li {
+            padding: 0;
+            color: white;
+        }
+
+        nav li a {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav li a:hover {
+            color: #333;
+        }
+
+        .map-container {
+            margin-top: 80px;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+        }
+
+        gmp-map {
+            width: 90%;
+            max-width: 1200px;
+            height: 70vh;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .map-container {
+                padding: 1rem;
+            }
+
+            gmp-map {
+                width: 100%;
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-wrapper"></div>
+        <nav>
+            <h4>AceIt</h4>
+            <ul>
+                <li><a href="#">MapIt.io</a></li>
+                <li><a href="#">FlashCard.io</a></li>
+                <li><a href="#">UploadIt.io</a></li>
+            </ul>
+        </nav>
+    </div>
+
+
+    <h1>My Journal</h1>
+    <div id="journal-form">
+        <input type="text" id="entry-title" placeholder="Entry Title" required>
+        <textarea id="entry-content" placeholder="Write your journal entry here..." required></textarea>
+        <button onclick="saveEntry()">Save Entry</button>
+    </div>
+    <div id="journal-entries"></div>
+
+    <script>
+        function saveEntry() {
+            const title = document.getElementById('entry-title').value;
+            const content = document.getElementById('entry-content').value;
+            const date = new Date().toLocaleString();
+
+            if (title && content) {
+                const entry = { title, content, date };
+                let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+                entries.unshift(entry);
+                localStorage.setItem('journalEntries', JSON.stringify(entries));
+
+                document.getElementById('entry-title').value = '';
+                document.getElementById('entry-content').value = '';
+
+                displayEntries();
+            }
+        }
+
+        function displayEntries() {
+            const entriesDiv = document.getElementById('journal-entries');
+            entriesDiv.innerHTML = '';
+
+            const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+
+            entries.forEach((entry, index) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'journal-entry';
+                entryDiv.innerHTML = `
+                    <div class="journal-entry-header">
+                        <h3>${entry.title}</h3>
+                    </div>
+                    <div class="journal-entry-content">
+                        <p>${entry.content}</p>
+                        <small>${entry.date}</small>
+                    </div>
+                `;
+                entriesDiv.appendChild(entryDiv);
+
+                const header = entryDiv.querySelector('.journal-entry-header');
+                const content = entryDiv.querySelector('.journal-entry-content');
+
+                header.addEventListener('click', () => {
+                    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+        }
+
+        // Display entries when the page loads
+        displayEntries();
+    </script>
+</body>
+</html>
