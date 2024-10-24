@@ -1,8 +1,10 @@
-<html></html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Simple Marker</title>
-    <script async src="">
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Marker with Info</title>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDITE3U3wzQMZc8ZgTEinEltyKsG1U2g7M"></script>
     <style>
         body {
             margin: 0;
@@ -74,7 +76,7 @@
             min-height: calc(100vh - 80px);
         }
 
-        gmp-map {
+        #map {
             width: 90%;
             max-width: 1200px;
             height: 70vh;
@@ -98,13 +100,12 @@
                 padding: 1rem;
             }
 
-            gmp-map {
+            #map {
                 width: 100%;
                 height: 60vh;
             }
         }
     </style>
-
 </head>
 <body>
     <div class="header-wrapper">
@@ -119,9 +120,102 @@
     </div>
     
     <div class="map-container">
-        <gmp-map center="40.12150192260742,-100.45039367675781" zoom="4" map-id="DEMO_MAP_ID">
-            <gmp-advanced-marker position="40.12150192260742,-100.45039367675781" title="My location"></gmp-advanced-marker>
-        </gmp-map>
+        <div id="map"></div>
     </div>
+
+    <script>
+        let map;
+        let currentMarker = null; // Store the current marker
+        let infoWindowTimeout = null; // Store the timeout for infoWindow closure
+
+        function initMap() {
+            const initialLocation = { lat: 40.1215, lng: -100.4504 }; // Initial map center
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 4,
+                center: initialLocation,
+            });
+
+            // Add a click listener to add a marker and prompt for name and description
+            map.addListener("click", (event) => {
+                const lat = event.latLng.lat();
+                const lng = event.latLng.lng();
+                console.log("Clicked location:", lat, lng);
+
+                const name = prompt("Enter the name of the location:");
+                const description = prompt("Enter a short description of the location:");
+
+                if (name && description) {
+                    addMarker({ lat, lng }, name, description);
+                }
+            });
+
+            // Remove marker with double-click
+            map.addListener("dblclick", () => {
+                if (currentMarker) {
+                    currentMarker.setMap(null); // Remove the marker from the map
+                    currentMarker = null;
+                }
+            });
+        }
+
+        // Function to add a marker with name and description
+        function addMarker(position, name, description) {
+            if (currentMarker) {
+                currentMarker.setMap(null); // Remove any existing marker
+            }
+
+            // Create a new marker
+            currentMarker = new google.maps.Marker({
+                position,
+                map: map,
+                title: name
+            });
+
+            // Info window content
+            const infoWindowContent = `
+                <div style="min-width: 200px;">
+                    <h3>${name}</h3>
+                    <p>${description}</p>
+                    <a href="https://www.google.com/maps?q=${position.lat},${position.lng}" target="_blank">Open in Google Maps</a>
+                </div>
+            `;
+
+            // Create an info window
+            const infoWindow = new google.maps.InfoWindow({
+                content: infoWindowContent
+            });
+
+            // Show info window when hovering over the marker
+            currentMarker.addListener("mouseover", () => {
+                // Cancel any pending infoWindow closures
+                if (infoWindowTimeout) {
+                    clearTimeout(infoWindowTimeout);
+                    infoWindowTimeout = null;
+                }
+                infoWindow.open(map, currentMarker);
+            });
+
+            // Start a timer to close the info window 3 seconds after mouse leaves
+            currentMarker.addListener("mouseout", () => {
+                infoWindowTimeout = setTimeout(() => {
+                    infoWindow.close();
+                }, 3000); // 3 seconds delay
+            });
+
+            // Ensure info window stays open if marker is re-hovered before timeout
+            currentMarker.addListener("mouseover", () => {
+                clearTimeout(infoWindowTimeout);
+                infoWindowTimeout = null;
+                infoWindow.open(map, currentMarker);
+            });
+        }
+
+        // Load the map
+        window.onload = initMap;
+    </script>
 </body>
 </html>
+
+
+
+
