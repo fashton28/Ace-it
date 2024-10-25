@@ -13,6 +13,7 @@ ul{
     margin-top: 6px;
     list-style: none;
     display: flex;
+    margin-left: 120px;
     
 }
 
@@ -27,6 +28,7 @@ li{
     background-color: white;
     margin: 40px;
     border-radius: 50px;
+    margin-top: 40px;
 }
 
 .main-container{
@@ -124,6 +126,5 @@ html,body {
     height: 100%;
     margin: 0;
     padding: 0;}
-
 
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Marker with Info</title>
+    <link rel="stylesheet" href="generalStyle.css">
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDITE3U3wzQMZc8ZgTEinEltyKsG1U2g7M"></script>
     <style>
         body {
@@ -12,7 +13,7 @@
             min-height: 100vh;
             font-family: "Rubik", sans-serif;
             background-color: #f5f5f5;
-            background-image: url("jungle.jpeg");
+            background-image: url("/Ace-it/jungle.jpeg");
             background-size: 1500px;
         }
 
@@ -104,13 +105,24 @@
                 width: 100%;
                 height: 60vh;
             }
+
+            a {
+                text-decoration: none; /* Removes the underline */
+                color: inherit; /* Makes the link color inherit the color of its parent */
+            }
+
+            a:hover {
+                color: inherit; /* Keeps the hover color the same */
+            }
+
         }
     </style>
 </head>
 <body>
     <div class="header-wrapper">
         <nav>
-            <h4>AceIt</h4>
+            <h4>JungleMind</h4>
+            <img src="/Ace-it/logo.png" alt="logo" height="100px" width="200px">
             <ul>
                 <li><a href="#">MapIt.io</a></li>
                 <li><a href="#">FlashCard.io</a></li>
