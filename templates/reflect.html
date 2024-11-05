@@ -205,7 +205,7 @@
             if (title && content) {
                 const entry = { title, content, date };
                 let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
-                entries.unshift(entry);
+                entries.unshift(entry); 
                 localStorage.setItem('journalEntries', JSON.stringify(entries));
 
                 document.getElementById('entry-title').value = '';
@@ -227,20 +227,30 @@
                 entryDiv.innerHTML = `
                     <div class="journal-entry-header">
                         <h3>${entry.title}</h3>
+                        <button class = "delete">delete</button>
                     </div>
                     <div class="journal-entry-content">
                         <p>${entry.content}</p>
                         <small>${entry.date}</small>
                     </div>
+
                 `;
                 entriesDiv.appendChild(entryDiv);
 
                 const header = entryDiv.querySelector('.journal-entry-header');
                 const content = entryDiv.querySelector('.journal-entry-content');
+                const deleteButton = entryDiv.querySelector(".delete")
 
                 header.addEventListener('click', () => {
                     content.style.display = content.style.display === 'block' ? 'none' : 'block';
                 });
+
+                deleteButton.addEventListener('click', (e) => {
+                    const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+                    entries.splice(index, 1); // Remove the entry from the array
+                    localStorage.setItem('journalEntries', JSON.stringify(entries)); // Update localStorage
+                    entryDiv.remove(); // Remove the entry from the DOM
+                })
             });
         }
 
